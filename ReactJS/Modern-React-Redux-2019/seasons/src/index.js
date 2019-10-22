@@ -1,12 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import SeasonDisplay from "./SeasonDisplay";
+import Spinner from "./Spinner";
 
 class App extends React.Component {
   //ctor
-  constructor(props) {
-    super(props);
-    this.state = { lat: null, ErrorMessage: "" }; //initialize the state object in ctor.
 
+  state = { lat: null, ErrorMessage: "" };
+
+  componentDidMount() {
     window.navigator.geolocation.getCurrentPosition(
       position => {
         this.setState({
@@ -20,25 +22,23 @@ class App extends React.Component {
     );
   }
 
-  componentDidMount() {
-    console.log("my component did mount and render");
-  }
-
   componentDidUpdate() {
     console.log("My Component just got updated - it rerendered.");
   }
 
-  //React says we have to define render!!!
-  render() {
-    //render will be very very very frequently. Very Bad place to initialize something.
-
+  renderContent = () => {
     if (this.state.ErrorMessage && !this.state.lat) {
       return <div>Error: {this.state.ErrorMessage}</div>;
     }
     if (!this.state.ErrorMessage && this.state.lat) {
-      return <div>latitude: {this.state.lat}</div>;
+      return <SeasonDisplay lat={this.state.lat} />;
     }
-    return <div>Loading...</div>;
+    return <Spinner message="Please accept the location request." />;
+  };
+
+  //React says we have to define render!!!
+  render() {
+    return <div className="border red">{this.renderContent()}</div>;
   }
 }
 
