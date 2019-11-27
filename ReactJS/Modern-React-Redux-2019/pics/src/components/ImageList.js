@@ -2,6 +2,7 @@ import React from "react";
 import "./ImageList.css";
 import ImageCard from "./ImageCard";
 
+//dumb component.
 const ImageList = props => {
   console.log(props.images);
   const images = props.images.map(image => {
